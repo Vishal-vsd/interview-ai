@@ -1,10 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import connectDB from "./config/db"
+import connectDB from "./config/db";
+
 
 dotenv.config();
-connectDB()
+connectDB();
 
 const app = express();
 
@@ -12,11 +13,11 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("Interview AI API running")
-})
+  res.send("Interview AI API running");
+});
 
 const PORT = Number(process.env.PORT) || 3000;
 
-app.listen(PORT, ()=> {
-    console.log(`Server running on ${PORT}`)
-})
+app.listen(PORT, async () => {
+  console.log(`Server running on ${PORT}`);
+});
