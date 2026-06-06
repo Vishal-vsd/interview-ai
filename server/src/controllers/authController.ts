@@ -95,12 +95,35 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 const logoutUser = async (req: Request, res: Response) => {
-    res.clearCookie("token");
+  res.clearCookie("token");
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};
+
+const getMe = async (req: Request, res: Response) => {
+  try {
+    const user = (req as any).user;
 
     return res.status(200).json({
-        success: true,
-        message: "Logged out successfully"
-    })
-}
+      success: true,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
 
-export { registerUser, loginUser, logoutUser};
+export { registerUser, loginUser, logoutUser, getMe }
