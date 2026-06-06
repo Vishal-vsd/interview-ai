@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db";
 import cookieParser from "cookie-parser"
 import authRoutes from "./routes/authRoutes"
+import interviewRoutes from "./routes/interviewRoutes"
 
 dotenv.config();
 connectDB();
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cookieParser())
 
 app.use("/api/auth", authRoutes)
+app.use("/api/interview", interviewRoutes)
 
 app.get("/", (req, res) => {
   res.send("Interview AI API running");
