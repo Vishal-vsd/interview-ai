@@ -28,10 +28,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    interviewsTaken: {
-      type: Number,
-      default: 0,
-    },
   },
   { timestamps: true },
 );
@@ -46,6 +42,17 @@ userSchema.pre("save", async function () {
 userSchema.methods.comparePassword = async function (enteredPassword: string) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
-const User = mongoose.model("User", userSchema);
+
+interface IUser extends Document {
+  name: string;
+  email: string;
+  password: string;
+  role: "user" | "admin";
+  avatar: string;
+
+  comparePassword(enteredPassword: string): Promise<boolean>;
+}
+
+const User = mongoose.model<IUser>("User", userSchema)
 
 export default User;
