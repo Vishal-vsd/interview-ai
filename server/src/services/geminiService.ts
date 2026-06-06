@@ -93,3 +93,56 @@ export const evaluateAnswer = async (question: string, answer: string) => {
     throw error;
   }
 };
+
+interface SubmittedQuestions {
+  question: string;
+  answer: string;
+}
+
+export const evaluateInterview = async (questions: SubmittedQuestions[]) => {
+  try {
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY!,
+    });
+    const prompt = `
+    Evaluate the following interview answers.
+
+    ${JSON.stringify(questions)}
+
+    Return ONLY valid JSON.
+
+    Format:
+    {
+     "overallScore": 8,
+     "results": [
+     {
+      "question": "What is JWT?",
+      "answer": "...",
+      "score": 8,
+      "feedback": "Good answer"
+    }
+  ]
+}
+`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+    const text = response.text?.trim() || "{}";
+
+    const cleanedText = text.replace(/```json\s*/gi, "").replace(/```/g, "");
+
+    return JSON.parse(cleanedText);
+  } catch (error: any) {
+    console.error("FULL ERROR:", error);
+
+    if (error.status === 503) {
+      throw new Error(
+        "Gemini is currently busy. Please try again in a few seconds.",
+      );
+    }
+
+    throw error;
+  }
+};
