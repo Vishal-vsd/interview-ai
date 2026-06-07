@@ -184,3 +184,53 @@ export const getInterviewById = async (
     });
   }
 };
+
+export const getInterviewStats = async(req: Request, res: Response): Promise<void> => {
+    try {
+        const user = (req as any).user
+        const stats = await Interview.aggregate([
+            {
+                $match: {
+                    user: user._id
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalInterviews: {
+                        $sum: 1
+                    },
+                    averageScore: {
+                        $avg: "$overallScore"
+                    },
+                    bestScore: {
+                        $max: "$overallScore"
+                    }
+                }
+            }
+        ])
+
+        const result = stats[0]
+        ? {
+            totalInterviews: stats[0].totalInterviews,
+            averageScore: Number(stats[0].averageScore.toFixed(1)),
+            bestScore: stats[0].bestScore
+        }
+        : {
+            totalInterviews: 0,
+            averageScore: 0,
+            bestScore: 0,
+        }
+        res.status(200).json({
+            success: true,
+            stats: result
+        })
+        } catch (error) {
+        console.error(error)
+
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        })
+    }
+}
