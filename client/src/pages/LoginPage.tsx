@@ -1,7 +1,28 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "../layouts/AuthLayout";
+import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { loginUser } from "../services/authService";
 
 const Login = () => {
+  const { setUser } = useAuth();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    try {
+      const data = await loginUser(email, password);
+
+      if(data.success){
+        setUser(data.user);
+        navigate("/dashboard")
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <AuthLayout>
       <div>
@@ -13,7 +34,7 @@ const Login = () => {
           Login to continue your interview journey
         </p>
 
-        <form className="mt-8 space-y-4">
+        <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
 
           <div>
             <label className="mb-2 block text-sm">
@@ -22,6 +43,8 @@ const Login = () => {
 
             <input
               type="email"
+              value={email}
+              onChange={(e)=> setEmail(e.target.value)}
               placeholder="Enter your email"
               className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 outline-none transition focus:border-white"
             />
@@ -34,6 +57,8 @@ const Login = () => {
 
             <input
               type="password"
+              value={password}
+              onChange={(e)=> setPassword(e.target.value)}
               placeholder="Enter your password"
               className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-3 outline-none transition focus:border-white"
             />
