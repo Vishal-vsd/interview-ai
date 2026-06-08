@@ -1,23 +1,31 @@
 import StatCard from "./StatCard";
 
-const StatsCards = () => {
+interface StatsCardsProps {
+    stats: {
+        totalInterviews: number;
+        averageScore: number;
+        bestScore: number;
+    }
+}
+
+const StatsCards = ({stats}: StatsCardsProps) => {
   return (
     <section className="my-8">
       <div className="grid gap-6 md:grid-cols-3">
 
         <StatCard
           title="Total Interviews"
-          value={12}
+          value={stats.totalInterviews}
         />
 
         <StatCard
           title="Average Score"
-          value={8.5}
+          value={stats.averageScore}
         />
 
         <StatCard
           title="Best Score"
-          value={10}
+          value={stats.bestScore}
         />
 
       </div>
