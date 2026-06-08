@@ -4,6 +4,7 @@ import RegisterPage from "../pages/RegisterPage";
 import Dashboard from "../pages/Dashboard";
 import History from "../pages/History";
 import ProtectRoutes from "./ProtectedRoutes";
+import Interview from "../pages/Interview";
 
 const AppRoutes = () => {
   return (
@@ -23,6 +24,14 @@ const AppRoutes = () => {
         element={
           <ProtectRoutes>
             <History />
+          </ProtectRoutes>
+        }
+      />
+      <Route
+        path="/interview"
+        element={
+          <ProtectRoutes>
+            <Interview />
           </ProtectRoutes>
         }
       />

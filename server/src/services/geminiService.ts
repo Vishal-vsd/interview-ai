@@ -13,12 +13,14 @@ export const generateQuestions = async (
         Difficulty: ${difficulty}
         
         Rules:
-        - Questions must match the selected role.
+        - Questions must match the selected role.        
         - Questions should be suitable for a real technical interview.
         - Keep each question under 20 words.
         - Do not number questions.
         - Do not provide answers.
         - Return ONLY a valid JSON array.
+        - Do NOT wrap the response in markdown.
+        - Do NOT use \`\`\`json or \`\`\`.
 
         Example:
         [
@@ -32,7 +34,11 @@ export const generateQuestions = async (
     });
 
     const text = response.text?.trim() || "[]";
-    return JSON.parse(text);
+    const cleanedText = text
+      .replace(/```json\s*/g, "")
+      .replace(/```\s*/g, "")
+      .trim();
+    return JSON.parse(cleanedText);
   } catch (error: any) {
     console.error("FULL ERROR:", error);
 
