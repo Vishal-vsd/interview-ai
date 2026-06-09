@@ -1,12 +1,13 @@
 import { useState } from "react";
 import InterviewForm from "../components/interview/InterviewForm";
 import QuestionList from "../components/interview/QuestionList";
-import { evaluateInterview } from "../services/interviewService";
+import { submitInterview } from "../services/interviewService";
 import InterviewResult from "../components/interview/InterviewResult";
 const InterviewPage = () => {
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
-
+  const [role, setRole] = useState("");
+  const [difficulty, setDifficulty] = useState("Beginner")
   const [result, setResult] = useState<any>(null);
 
   const handleInterviewSubmit = async () => {
@@ -15,10 +16,15 @@ const InterviewPage = () => {
         question,
         answer: answers[index] || "",
       }));
-      const data = await evaluateInterview(payload);
+
+      const data = await submitInterview({
+        role,
+        difficulty,
+        questions: payload
+      })
 
       if (data.success) {
-        setResult(data.result);
+        setResult(data.interview);
       }
     } catch (error) {
       console.error(error);
@@ -53,7 +59,12 @@ const InterviewPage = () => {
         {result ? (
           <InterviewResult result={result} />
         ) : questions.length === 0 ? (
-          <InterviewForm setQuestions={setQuestions} />
+          <InterviewForm 
+          role={role}
+          setRole={setRole}
+          difficulty={difficulty}
+          setDifficulty={setDifficulty}
+          setQuestions={setQuestions} />
         ) : (
           <QuestionList
             questions={questions}

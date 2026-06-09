@@ -21,3 +21,9 @@ export const evaluateInterview = async (questions: SubmittedQuestions[]) => {
 
   return data;
 };
+
+export const submitInterview = async(payload: any) => {
+  const {data} = await API.post("/interview/submit", payload)
+
+  return data
+}

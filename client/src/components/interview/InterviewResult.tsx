@@ -32,7 +32,7 @@ const InterviewResult = ({
       </div>
 
       {/* Questions */}
-      {result.results.map(
+      {result?.questions?.map(
         (item: any, index: number) => (
           <div
             key={index}

@@ -2,14 +2,21 @@ import { useState } from "react";
 import { generateInterview } from "../../services/interviewService";
 
 interface InterviewFormProps {
+  role: string;
+  setRole: React.Dispatch<React.SetStateAction<string>>
+  difficulty: string;
+  setDifficulty: React.Dispatch<React.SetStateAction<string>>;
   setQuestions: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const InterviewForm = ({
+  role,
+  setRole,
+  difficulty,
+  setDifficulty,
   setQuestions,
 }: InterviewFormProps) => {
-  const [role, setRole] = useState("");
-  const [difficulty, setDifficulty] = useState("Beginner");
+
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (
