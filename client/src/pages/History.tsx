@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { getInterviewHistory } from "../services/authService";
+import HistoryList from "../components/history/HIstoryList";
 
 interface Interview {
   _id: string;
@@ -75,42 +76,7 @@ const History = () => {
             </p>
           </div>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {interviewHistory.map((interview) => (
-              <div
-                key={interview._id}
-                className="
-                  rounded-2xl
-                  border
-                  border-zinc-800
-                  bg-zinc-900
-                  p-5
-                  transition
-                  hover:border-zinc-700
-                "
-              >
-                <h2 className="text-xl font-semibold">
-                  {interview.role}
-                </h2>
-
-                <p className="mt-1 text-zinc-400">
-                  {interview.difficulty}
-                </p>
-
-                <div className="mt-5 flex items-center justify-between">
-                  <span className="text-lg font-bold">
-                    {interview.overallScore}/10
-                  </span>
-
-                  <span className="text-sm text-zinc-500">
-                    {new Date(
-                      interview.createdAt
-                    ).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+          <HistoryList interviews={interviewHistory}/>
         )}
       </div>
     </div>

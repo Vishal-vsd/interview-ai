@@ -27,3 +27,9 @@ export const submitInterview = async(payload: any) => {
 
   return data
 }
+
+export const getInterviewById = async(id:string)=> {
+  const {data} = await API.get(`/interview/${id}`)
+
+  return data;
+}
