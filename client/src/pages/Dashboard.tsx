@@ -12,41 +12,38 @@ const Dashboard = () => {
     totalInterviews: 0,
     averageScore: 0,
     bestScore: 0,
-  })
+  });
 
-  useEffect(()=> {
-    const fetchStats = async() => {
-        try {
-            const data = await getInterviewStats();
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getInterviewStats();
 
-            if(data.success){
-                setStats(data.stats);
-            }
-        } catch (error) {
-            console.error(error);
+        if (data.success) {
+          setStats(data.stats);
         }
-    }
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    fetchStats()
-  }, [])
+    fetchStats();
+  }, []);
 
   console.log(user);
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
-        <Navbar />
-        <main className="mx-auto max-w-7xl p-6"> 
-            <h1 className="text-3xl font-bold">
-                Welcome Back, {user?.name} 👋
-            </h1>
-            <p className="mt-2 text-zinc-400">
-                Ready to practice your next interview?
-            </p>
-                    <StartInterviewCard />
-       {stats && <StatsCards stats={stats}/>}
-        <RecentInterviews/>
-        </main>
-
+      <Navbar />
+      <main className="mx-auto max-w-7xl p-6">
+        <h1 className="text-3xl font-bold">Welcome Back, {user?.name} 👋</h1>
+        <p className="mt-2 text-zinc-400">
+          Ready to practice your next interview?
+        </p>
+        <StartInterviewCard />
+        {stats && <StatsCards stats={stats} />}
+        <RecentInterviews />
+      </main>
     </div>
   );
 };

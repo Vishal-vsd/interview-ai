@@ -5,10 +5,19 @@ import Dashboard from "../pages/Dashboard";
 import History from "../pages/History";
 import ProtectRoutes from "./ProtectedRoutes";
 import Interview from "../pages/Interview";
+import InterviewDetails from "../pages/InterviewDetails";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route
+        path="/"
+        element={
+          <ProtectRoutes>
+            <Dashboard />
+          </ProtectRoutes>
+        }
+      />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route
@@ -35,6 +44,9 @@ const AppRoutes = () => {
           </ProtectRoutes>
         }
       />
+      <Route path="/history/:id" element={<ProtectRoutes>
+        <InterviewDetails />
+      </ProtectRoutes>} />
     </Routes>
   );
 };

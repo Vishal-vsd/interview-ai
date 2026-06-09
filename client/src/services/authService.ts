@@ -37,3 +37,9 @@ export const logoutUser = async () => {
 
     return data;
 }
+
+export const getInterviewHistory = async () => {
+    const {data} = await API.get("/interview/history");
+
+    return data;
+}

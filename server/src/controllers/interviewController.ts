@@ -67,6 +67,34 @@ export const evaluateInterviewAnswers = async (
   }
 };
 
+export const evaluateCompleteInterview = async(req: Request, res:Response): Promise<void> => {
+  try {
+    const {questions} = req.body;
+
+    if(!questions || !Array.isArray(questions)){
+      res.status(400).json({
+        success: false,
+        message: "Questions array is required"
+      })
+      return
+    }
+
+    const result = await evaluateInterview(questions);
+
+    res.status(200).json({
+      success: true,
+      result,
+    })
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to evaluate interview"
+    })
+  }
+}
+
 export const submitInterview = async (
   req: Request,
   res: Response,
@@ -142,7 +170,6 @@ export const interviewHistory = async (
   } catch (error) {
     res.status(500).json({
       success: false,
-
       message: "Internal Server Error",
     });
   }

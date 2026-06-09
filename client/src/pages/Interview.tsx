@@ -1,31 +1,65 @@
 import { useState } from "react";
 import InterviewForm from "../components/interview/InterviewForm";
 import QuestionList from "../components/interview/QuestionList";
-
+import { evaluateInterview } from "../services/interviewService";
+import InterviewResult from "../components/interview/InterviewResult";
 const InterviewPage = () => {
   const [questions, setQuestions] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Record<number, string>>({});
 
+  const [result, setResult] = useState<any>(null);
+
+  const handleInterviewSubmit = async () => {
+    try {
+      const payload = questions.map((question, index) => ({
+        question,
+        answer: answers[index] || "",
+      }));
+      const data = await evaluateInterview(payload);
+
+      if (data.success) {
+        setResult(data.result);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
       <div className="mx-auto max-w-3xl px-6 py-12">
         <div className="mb-10 text-center">
-          <h1 className="text-4xl font-bold">Start New Interview 🚀</h1>
+          {questions.length === 0 ? (
+            <>
+              <h1 className="text-4xl font-bold">Start New Interview 🚀</h1>
 
-          <p className="mt-3 text-zinc-400">
-            Generate AI-powered interview questions and practice like a real
-            interview.
-          </p>
+              <p className="mt-3 text-zinc-400">
+                Generate AI-powered interview questions and practice like a real
+                interview.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="text-4xl font-bold">Answer the Questions 📝</h1>
+
+              <p className="mt-3 text-zinc-400">
+                Take your time and answer each question as if you're in a real
+                interview.
+              </p>
+            </>
+          )}
         </div>
 
-        {questions.length === 0 ? (
+        {result ? (
+          <InterviewResult result={result} />
+        ) : questions.length === 0 ? (
           <InterviewForm setQuestions={setQuestions} />
         ) : (
           <QuestionList
             questions={questions}
             answers={answers}
             setAnswers={setAnswers}
+            onSubmit={handleInterviewSubmit}
           />
         )}
       </div>
