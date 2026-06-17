@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import DashboardHeader from "../components/admin/DashboardHeader";
 import StatsGrid from "../components/admin/StatsGrid";
 import { getAdminStats } from "../services/adminService";
+import RecentInterviews from "../components/admin/RecentInterviews";
+
 
 interface AdminStats {
   totalUsers: number;
@@ -12,6 +14,7 @@ interface AdminStats {
 const AdminDashboard = () => {
   const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [recentInterviews, setRecentInterviews] = useState<any[]>([])
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -20,6 +23,7 @@ const AdminDashboard = () => {
 
         if (data.success) {
           setStats(data.stats);
+          setRecentInterviews(data.recentInterviews)
         }
       } catch (error) {
         console.error(error);
@@ -47,15 +51,13 @@ const AdminDashboard = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-zinc-950 text-white">
-      <div className="mx-auto max-w-7xl px-6 py-10">
-        <DashboardHeader />
-
-        <StatsGrid stats={stats} />
-      </div>
-    </div>
-  );
+return (
+  <>
+    <DashboardHeader />
+    <StatsGrid stats={stats} />
+    <RecentInterviews interviews={recentInterviews} />
+  </>
+);
 };
 
 export default AdminDashboard;

@@ -11,6 +11,8 @@ export const getAdminStats = async (
     const totalUsers = await User.countDocuments();
     const totalInterviews = await Interview.countDocuments();
 
+    const recentInterviews = await Interview.find().sort({createdAt: -1}).limit(5).select("role difficulty overallScore createdAt")
+
     const scoreStats = await Interview.aggregate([
       {
         $group: {
@@ -30,6 +32,7 @@ export const getAdminStats = async (
         totalUsers,
         totalInterviews,
         averagePlatformScore: Number(averagePlatformScore.toFixed(1)),
+        recentInterviews
       },
     });
   } catch (error) {

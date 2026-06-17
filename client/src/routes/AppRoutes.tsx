@@ -8,6 +8,9 @@ import Interview from "../pages/Interview";
 import InterviewDetails from "../pages/InterviewDetails";
 import AdminProtectedRoute from "./AdminProtectedRoutes";
 import AdminDashboard from "../pages/AdminDashboard";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminUsers from "../pages/AdminUsers";
+import AdminInterviews from "../pages/AdminInterviews";
 
 const AppRoutes = () => {
   return (
@@ -50,9 +53,29 @@ const AppRoutes = () => {
         <InterviewDetails />
       </ProtectRoutes>} />
 
-      <Route path="/admin/dashboard" element={<AdminProtectedRoute>
-        <AdminDashboard />
-      </AdminProtectedRoute>}/>
+<Route
+  path="/admin"
+  element={
+    <AdminProtectedRoute>
+      <AdminLayout />
+    </AdminProtectedRoute>
+  }
+>
+  <Route
+    path="dashboard"
+    element={<AdminDashboard />}
+  />
+
+  <Route
+    path="users"
+    element={<AdminUsers />}
+  />
+
+  <Route
+    path="interviews"
+    element={<AdminInterviews />}
+  />
+</Route>
     </Routes>
   );
 };
