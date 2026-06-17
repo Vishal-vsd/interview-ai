@@ -12,6 +12,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import AdminUsers from "../pages/AdminUsers";
 import AdminInterviews from "../pages/AdminInterviews";
 import AdminInterviewDetails from "../pages/AdminInterviewDetails";
+import AdminUserDetails from "../pages/AdminUserDetails";
 
 const AppRoutes = () => {
   return (
@@ -70,6 +71,8 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<AdminDashboard />} />
 
         <Route path="users" element={<AdminUsers />} />
+
+        <Route path="users/:id" element={<AdminUserDetails />} />
 
         <Route path="interviews" element={<AdminInterviews />} />
 

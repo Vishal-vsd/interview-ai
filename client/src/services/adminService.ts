@@ -29,3 +29,9 @@ export const getInterviewByIdAdmin = async(id: string) => {
 
     return data;
 }
+
+export const getUserDetails = async(id:string) => {
+    const{data} = await API.get(`/admin/users/${id}`)
+
+    return data;
+}

@@ -1,22 +1,19 @@
+import { useNavigate } from "react-router-dom";
+
 interface UsersTableProps {
   users: any[];
   onDelete: (id: string) => void;
 }
 
-const UsersTable = ({
-  users,
-  onDelete,
-}: UsersTableProps) => {
+const UsersTable = ({ users, onDelete }: UsersTableProps) => {
+  const navigate = useNavigate();
+
   if (users.length === 0) {
     return (
       <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-10 text-center">
-        <h2 className="text-xl font-semibold">
-          No Matching Users Found
-        </h2>
+        <h2 className="text-xl font-semibold">No Matching Users Found</h2>
 
-        <p className="mt-2 text-zinc-400">
-          Try another search keyword.
-        </p>
+        <p className="mt-2 text-zinc-400">Try another search keyword.</p>
       </div>
     );
   }
@@ -47,13 +44,9 @@ const UsersTable = ({
                   hover:bg-zinc-800/30
                 "
               >
-                <td className="p-5 font-medium">
-                  {user.name}
-                </td>
+                <td className="p-5 font-medium">{user.name}</td>
 
-                <td className="p-5 text-zinc-400">
-                  {user.email}
-                </td>
+                <td className="p-5 text-zinc-400">{user.email}</td>
 
                 <td className="p-5">
                   <span
@@ -75,32 +68,37 @@ const UsersTable = ({
                 </td>
 
                 <td className="p-5 text-zinc-500">
-                  {new Date(
-                    user.createdAt
-                  ).toLocaleDateString()}
+                  {new Date(user.createdAt).toLocaleDateString()}
                 </td>
 
                 <td className="p-5">
-                  {user.role !== "admin" && (
+                  <div className="flex gap-2">
                     <button
-                      onClick={() =>
-                        onDelete(user._id)
-                      }
+                      onClick={() => navigate(`/admin/users/${user._id}`)}
                       className="
-                        rounded-xl
-                        bg-red-500/20
-                        px-4
-                        py-2
-                        text-sm
-                        font-medium
-                        text-red-400
-                        transition
-                        hover:bg-red-500/30
-                      "
+        rounded-xl
+        bg-white
+        px-4
+        py-2
+        text-black
+      "
+                    >
+                      View
+                    </button>
+
+                    <button
+                      onClick={() => onDelete(user._id)}
+                      className="
+        rounded-xl
+        bg-red-500/20
+        px-4
+        py-2
+        text-red-400
+      "
                     >
                       Delete
                     </button>
-                  )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -123,9 +121,7 @@ const UsersTable = ({
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="text-lg font-semibold">
-                  {user.name}
-                </h3>
+                <h3 className="text-lg font-semibold">{user.name}</h3>
 
                 <p className="mt-1 break-all text-sm text-zinc-400">
                   {user.email}
@@ -153,22 +149,16 @@ const UsersTable = ({
 
             <div className="mt-5 flex items-center justify-between border-t border-zinc-800 pt-4">
               <div>
-                <p className="text-xs text-zinc-500">
-                  Joined
-                </p>
+                <p className="text-xs text-zinc-500">Joined</p>
 
                 <p className="text-sm">
-                  {new Date(
-                    user.createdAt
-                  ).toLocaleDateString()}
+                  {new Date(user.createdAt).toLocaleDateString()}
                 </p>
               </div>
 
               {user.role !== "admin" && (
                 <button
-                  onClick={() =>
-                    onDelete(user._id)
-                  }
+                  onClick={() => onDelete(user._id)}
                   className="
                     rounded-xl
                     bg-red-500/20
