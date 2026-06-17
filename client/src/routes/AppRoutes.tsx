@@ -11,6 +11,7 @@ import AdminDashboard from "../pages/AdminDashboard";
 import AdminLayout from "../layouts/AdminLayout";
 import AdminUsers from "../pages/AdminUsers";
 import AdminInterviews from "../pages/AdminInterviews";
+import AdminInterviewDetails from "../pages/AdminInterviewDetails";
 
 const AppRoutes = () => {
   return (
@@ -49,33 +50,31 @@ const AppRoutes = () => {
           </ProtectRoutes>
         }
       />
-      <Route path="/history/:id" element={<ProtectRoutes>
-        <InterviewDetails />
-      </ProtectRoutes>} />
+      <Route
+        path="/history/:id"
+        element={
+          <ProtectRoutes>
+            <InterviewDetails />
+          </ProtectRoutes>
+        }
+      />
 
-<Route
-  path="/admin"
-  element={
-    <AdminProtectedRoute>
-      <AdminLayout />
-    </AdminProtectedRoute>
-  }
->
-  <Route
-    path="dashboard"
-    element={<AdminDashboard />}
-  />
+      <Route
+        path="/admin"
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout />
+          </AdminProtectedRoute>
+        }
+      >
+        <Route path="dashboard" element={<AdminDashboard />} />
 
-  <Route
-    path="users"
-    element={<AdminUsers />}
-  />
+        <Route path="users" element={<AdminUsers />} />
 
-  <Route
-    path="interviews"
-    element={<AdminInterviews />}
-  />
-</Route>
+        <Route path="interviews" element={<AdminInterviews />} />
+
+        <Route path="interviews/:id" element={<AdminInterviewDetails />}/>
+      </Route>
     </Routes>
   );
 };

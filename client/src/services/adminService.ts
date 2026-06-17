@@ -23,3 +23,9 @@ export const getAllInterviews = async() => {
 
     return data;
 }
+
+export const getInterviewByIdAdmin = async(id: string) => {
+    const {data} = await API.get(`/admin/interviews/${id}`)
+
+    return data;
+}

@@ -39,9 +39,12 @@ const AdminSidebar = () => {
     <aside
       className="
         flex
+        flex-col
+        fixed
+        left-0
+        top-0
         h-screen
         w-72
-        flex-col
         border-r
         border-zinc-800
         bg-zinc-900/60
@@ -50,13 +53,9 @@ const AdminSidebar = () => {
     >
       {/* Logo */}
       <div className="border-b border-zinc-800 p-6">
-        <h1 className="text-2xl font-bold tracking-tight">
-          InterviewAI
-        </h1>
+        <h1 className="text-2xl font-bold tracking-tight">InterviewAI</h1>
 
-        <p className="mt-1 text-sm text-zinc-500">
-          Admin Dashboard
-        </p>
+        <p className="mt-1 text-sm text-zinc-500">Admin Dashboard</p>
       </div>
 
       {/* Navigation */}
@@ -92,9 +91,7 @@ const AdminSidebar = () => {
               >
                 <Icon size={20} />
 
-                <span className="font-medium">
-                  {item.name}
-                </span>
+                <span className="font-medium">{item.name}</span>
               </NavLink>
             );
           })}
@@ -130,13 +127,9 @@ const AdminSidebar = () => {
             </div>
 
             <div>
-              <p className="font-semibold">
-                {user?.name}
-              </p>
+              <p className="font-semibold">{user?.name}</p>
 
-              <p className="text-sm text-zinc-500">
-                Administrator
-              </p>
+              <p className="text-sm text-zinc-500">Administrator</p>
             </div>
           </div>
 
