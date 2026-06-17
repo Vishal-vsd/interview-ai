@@ -17,3 +17,9 @@ export const deleteUser = async(userId: string) => {
 
     return data;
 }
+
+export const getAllInterviews = async() => {
+    const{data} = await API.get("/admin/interviews");
+
+    return data;
+}
