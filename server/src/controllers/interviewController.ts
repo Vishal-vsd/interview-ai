@@ -115,7 +115,7 @@ export const submitInterview = async (
       return;
     }
 
-    const hasEmptyAnswers = questions.some((q) => !q.asnwer?.trim())
+    const hasEmptyAnswers = questions.some((q) => !q.answer?.trim())
 
     if(hasEmptyAnswers){
       res.status(400).json({
@@ -247,6 +247,10 @@ export const getInterviewStats = async(req: Request, res: Response): Promise<voi
                 }
             }
         ])
+        
+        const recentInterviews = await Interview.find({
+          user: user._id
+        }).sort({createdAt: -1}).limit(5).select("role difficulty overallScore createdAt")
 
         const result = stats[0]
         ? {
@@ -261,7 +265,8 @@ export const getInterviewStats = async(req: Request, res: Response): Promise<voi
         }
         res.status(200).json({
             success: true,
-            stats: result
+            stats: result,
+            recentInterviews
         })
         } catch (error) {
         console.error(error)
@@ -305,3 +310,4 @@ export const deleteInterview = async(req: Request, res: Response): Promise<void>
     })
   }
 }
+

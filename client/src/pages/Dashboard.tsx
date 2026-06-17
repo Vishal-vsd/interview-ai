@@ -14,6 +14,8 @@ const Dashboard = () => {
     bestScore: 0,
   });
 
+  const [recentInterviews, setRecentInterviews] = useState<any[]>([])
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -21,6 +23,7 @@ const Dashboard = () => {
 
         if (data.success) {
           setStats(data.stats);
+          setRecentInterviews(data.recentInterviews)
         }
       } catch (error) {
         console.error(error);
@@ -42,7 +45,7 @@ const Dashboard = () => {
         </p>
         <StartInterviewCard />
         {stats && <StatsCards stats={stats} />}
-        <RecentInterviews />
+        <RecentInterviews interviews={recentInterviews}/>
       </main>
     </div>
   );
