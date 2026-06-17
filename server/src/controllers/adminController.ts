@@ -78,3 +78,30 @@ export const getAllInterviews = async (req: Request, res: Response): Promise<voi
         })
     }
 }
+
+export const deleteUser = async (req: Request, res: Response): Promise<void>=> {
+  try {
+    const {id} = req.params;
+    const user = await User.findById(id);
+
+    if(!user){
+      res.status(404).json({
+        success: false,
+        message: "User not found"
+      })
+      return;
+    }
+
+    await User.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully"
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
+}

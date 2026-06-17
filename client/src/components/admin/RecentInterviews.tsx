@@ -21,7 +21,7 @@ const RecentInterviews = ({
       </h2>
 
       <div className="mt-6 space-y-3">
-        {interviews.map((interview) => (
+        {interviews?.map((interview) => (
           <div
             key={interview._id}
             className="

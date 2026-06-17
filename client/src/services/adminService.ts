@@ -5,3 +5,15 @@ export const getAdminStats = async() => {
 
     return data;
 }
+
+export const getAllUsers = async() => {
+    const {data} = await API.get("/admin/users")
+
+    return data;
+}
+
+export const deleteUser = async(userId: string) => {
+    const {data} = await API.delete(`/admin/users/${userId}`)
+
+    return data;
+}
