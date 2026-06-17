@@ -6,6 +6,8 @@ import History from "../pages/History";
 import ProtectRoutes from "./ProtectedRoutes";
 import Interview from "../pages/Interview";
 import InterviewDetails from "../pages/InterviewDetails";
+import AdminProtectedRoute from "./AdminProtectedRoutes";
+import AdminDashboard from "../pages/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -47,6 +49,10 @@ const AppRoutes = () => {
       <Route path="/history/:id" element={<ProtectRoutes>
         <InterviewDetails />
       </ProtectRoutes>} />
+
+      <Route path="/admin/dashboard" element={<AdminProtectedRoute>
+        <AdminDashboard />
+      </AdminProtectedRoute>}/>
     </Routes>
   );
 };
