@@ -14,8 +14,13 @@ interface Interview {
 
 const History = () => {
   const [interviewHistory, setInterviewHistory] = useState<Interview[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [difficultyFilter, setDifficultyFilter] = useState("All");
+
+  const [sortBy, setSortBy] = useState("latest");
+
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchInterviewHistory = async () => {
@@ -35,6 +40,36 @@ const History = () => {
     fetchInterviewHistory();
   }, []);
 
+  const filteredInterviews = interviewHistory
+    .filter((interview) => {
+      const matchesSearch = interview.role
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+
+      const matchesDifficulty =
+        difficultyFilter === "All" || interview.difficulty === difficultyFilter;
+
+      return matchesSearch && matchesDifficulty;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "oldest":
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        case "highest":
+          return b.overallScore - a.overallScore;
+
+        case "lowest":
+          return a.overallScore - b.overallScore
+        case "latest":
+        default:
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+      }
+    });
+
   return (
     <div className="min-h-screen bg-zinc-950 text-white">
       <Navbar />
@@ -44,8 +79,67 @@ const History = () => {
           <h1 className="text-4xl font-bold">Interview History</h1>
 
           <p className="mt-2 text-zinc-400">
-            View all your previous interviews and scores.
+            Showing {filteredInterviews.length} interviews
           </p>
+          <div className="mt-6 flex flex-col gap-4 md:flex-row">
+            <input
+              type="text"
+              placeholder="Search by role..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="
+      flex-1
+      rounded-2xl
+      border
+      border-zinc-800
+      bg-zinc-900
+      px-4
+      py-3
+      outline-none
+      transition
+      focus:border-zinc-600
+    "
+            />
+
+            <select
+              value={difficultyFilter}
+              onChange={(e) => setDifficultyFilter(e.target.value)}
+              className="
+      rounded-2xl
+      border
+      border-zinc-800
+      bg-zinc-900
+      px-4
+      py-3
+      outline-none
+      focus:border-zinc-600
+    "
+            >
+              <option value="All">All Levels</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="
+    rounded-2xl
+    border
+    border-zinc-800
+    bg-zinc-900
+    px-4
+    py-3
+    outline-none
+    focus:border-zinc-600
+  "
+            >
+              <option value="latest">Latest</option>
+              <option value="oldest">Oldest</option>
+              <option value="highest">Highest Score</option>
+              <option value="lowest">Lowest Score</option>
+            </select>
+          </div>
         </div>
 
         {loading ? (
@@ -107,7 +201,7 @@ const History = () => {
             </button>
           </div>
         ) : (
-          <HistoryList interviews={interviewHistory} />
+          <HistoryList interviews={filteredInterviews} />
         )}
       </div>
     </div>
