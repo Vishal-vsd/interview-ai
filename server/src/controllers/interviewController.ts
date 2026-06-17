@@ -115,6 +115,17 @@ export const submitInterview = async (
       return;
     }
 
+    const hasEmptyAnswers = questions.some((q) => !q.asnwer?.trim())
+
+    if(hasEmptyAnswers){
+      res.status(400).json({
+        success: false,
+        message: "All questions must be answered"
+      })
+
+      return;
+    }
+
     const evaluation = await evaluateInterview(questions);
 
     const interview = await Interview.create({
@@ -260,4 +271,37 @@ export const getInterviewStats = async(req: Request, res: Response): Promise<voi
             message: "Internal Server Error"
         })
     }
+}
+
+export const deleteInterview = async(req: Request, res: Response): Promise<void> => {
+  try {
+    const user = (req as any).user;
+    const {id} = req.params;
+
+    const interview = await Interview.findOne({
+      _id: id,
+      user: user._id
+    });
+
+    if(!interview){
+      res.status(404).json({
+        success: false,
+        message: "Interview not found"
+      })
+      return
+    }
+
+    await Interview.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Interview deleted successfully"
+    })
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
 }

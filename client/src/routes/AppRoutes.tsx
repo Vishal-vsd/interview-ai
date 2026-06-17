@@ -14,6 +14,7 @@ import AdminInterviews from "../pages/AdminInterviews";
 import AdminInterviewDetails from "../pages/AdminInterviewDetails";
 import AdminUserDetails from "../pages/AdminUserDetails";
 
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -51,6 +52,16 @@ const AppRoutes = () => {
           </ProtectRoutes>
         }
       />
+
+      <Route
+        path="/interview/retake/:id"
+        element={
+          <ProtectRoutes>
+            <Interview />
+          </ProtectRoutes>
+        }
+      />
+
       <Route
         path="/history/:id"
         element={

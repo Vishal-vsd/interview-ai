@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
-import { evaluateCompleteInterview, evaluateInterviewAnswers, generateInterviewQuestions, getInterviewById, getInterviewStats, interviewHistory, submitInterview } from "../controllers/interviewController";
+import { deleteInterview, evaluateCompleteInterview, evaluateInterviewAnswers, generateInterviewQuestions, getInterviewById, getInterviewStats, interviewHistory, submitInterview } from "../controllers/interviewController";
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ router.post("/submit", authMiddleware, submitInterview)
 router.get("/history", authMiddleware, interviewHistory)
 router.get("/stats", authMiddleware, getInterviewStats)
 router.get("/:id", authMiddleware, getInterviewById)
+router.delete("/history/:id", authMiddleware, deleteInterview)
 
 export default router;

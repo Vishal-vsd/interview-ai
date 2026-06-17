@@ -1,12 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getInterviewById } from "../services/interviewService";
+import {
+  deleteInterview,
+  getInterviewById,
+} from "../services/interviewService";
+import toast from "react-hot-toast";
+import DeleteConfirmModal from "../components/admin/DeleteConfirmModal";
 
 const InterviewDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [interview, setInterview] = useState<any>(null);
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     const fetchInterview = async () => {
@@ -23,6 +30,23 @@ const InterviewDetails = () => {
 
     fetchInterview();
   }, [id]);
+
+  const handleDelete = async () => {
+    try {
+      const data = await deleteInterview(interview._id);
+
+      if (data.success) {
+        toast.success("Interview deleted successfully");
+        navigate("/history");
+      }
+    } catch (error: any) {
+      toast.error(
+        error?.response?.data?.message || "Failed to delete interview",
+      );
+    } finally {
+      setShowDeleteModal(false);
+    }
+  };
 
   if (!interview) {
     return (
@@ -77,12 +101,47 @@ const InterviewDetails = () => {
               </div>
             </div>
 
-            <div className="text-center">
+            <div className="flex flex-col items-center">
               <p className="text-sm text-zinc-500">Overall Score</p>
 
               <h2 className="mt-2 text-6xl font-bold text-green-400">
                 {interview.overallScore}/10
               </h2>
+
+              <div className="mt-6 flex flex-wrap justify-center gap-3">
+                <button
+                  onClick={() => navigate(`/interview/retake/${interview._id}`)}
+                  className="
+      rounded-xl
+      bg-white
+      px-5
+      py-3
+      font-medium
+      text-black
+      transition
+      hover:opacity-90
+    "
+                >
+                  Retake Interview
+                </button>
+
+                <button
+                  onClick={() => setShowDeleteModal(true)}
+                  className="
+      rounded-xl
+      border
+      border-red-500/30
+      px-5
+      py-3
+      font-medium
+      text-red-400
+      transition
+      hover:bg-red-500/10
+    "
+                >
+                  Delete Interview
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -127,6 +186,13 @@ const InterviewDetails = () => {
             </div>
           ))}
         </div>
+        <DeleteConfirmModal
+          isOpen={showDeleteModal}
+          title="Delete Interview"
+          message="Are you sure you want to delete this interview? This action cannot be undone."
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleDelete}
+        />
       </div>
     </div>
   );

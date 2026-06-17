@@ -33,3 +33,9 @@ export const getInterviewById = async(id:string)=> {
 
   return data;
 }
+
+export const deleteInterview = async(id: string) => {
+  const {data} = await API.delete(`/interview/history/${id}`);
+
+  return data;
+}
