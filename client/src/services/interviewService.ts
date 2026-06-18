@@ -39,3 +39,9 @@ export const deleteInterview = async(id: string) => {
 
   return data;
 }
+
+export const getAnalytics = async() => {
+  const {data} = await API.get("/interview/analytics");
+
+  return data;
+}

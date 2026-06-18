@@ -13,7 +13,7 @@ import AdminUsers from "../pages/AdminUsers";
 import AdminInterviews from "../pages/AdminInterviews";
 import AdminInterviewDetails from "../pages/AdminInterviewDetails";
 import AdminUserDetails from "../pages/AdminUserDetails";
-
+import Analytics from "../pages/Analytics";
 
 const AppRoutes = () => {
   return (
@@ -70,7 +70,14 @@ const AppRoutes = () => {
           </ProtectRoutes>
         }
       />
-
+      <Route
+        path="/analytics"
+        element={
+          <ProtectRoutes>
+            <Analytics />
+          </ProtectRoutes>
+        }
+      />
       <Route
         path="/admin"
         element={
@@ -87,7 +94,7 @@ const AppRoutes = () => {
 
         <Route path="interviews" element={<AdminInterviews />} />
 
-        <Route path="interviews/:id" element={<AdminInterviewDetails />}/>
+        <Route path="interviews/:id" element={<AdminInterviewDetails />} />
       </Route>
     </Routes>
   );

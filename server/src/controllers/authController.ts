@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import User from "../models/User";
-import jwt from "jsonwebtoken";
 import sendToken from "../utils/sendToken";
 
 const registerUser = async (req: Request, res: Response) => {
@@ -125,5 +124,6 @@ const getMe = async (req: Request, res: Response) => {
     });
   }
 };
+
 
 export { registerUser, loginUser, logoutUser, getMe }

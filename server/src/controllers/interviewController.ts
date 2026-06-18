@@ -311,3 +311,91 @@ export const deleteInterview = async(req: Request, res: Response): Promise<void>
   }
 }
 
+
+export const getAnalytics = async(req: Request, res: Response): Promise<void> => {
+  try { 
+    const user = (req as any).user;
+    
+    const stats = await Interview.aggregate([
+      {
+        $match: {
+          user: user._id
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalInterviews: {
+            $sum: 1,
+          },
+          averageScore: {
+            $avg: "$overallScore"
+          },
+          bestScore: {
+            $max: "$overallScore"
+          }
+        }
+      }
+    ]);
+
+    const scoreTrend = await Interview.find({
+      user: user._id
+    }).sort({createdAt: -1}).select("overallScore createdAt");
+
+    const difficultyBreakdown = await Interview.aggregate([
+      {
+        $match: {
+          user: user._id
+        }
+      },
+      {
+        $group: {
+          _id: "$difficulty",
+          count: {
+            $sum: 1,
+          }
+        }
+      }
+    ]);
+
+    const startOfMonth = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      1
+    )
+    const interviewsThisMonth = await Interview.countDocuments({
+      user: user._id,
+      createdAt: {
+        $gte: startOfMonth
+      }
+    });
+
+    const result = stats[0] 
+    ? {
+      totalInterviews: stats[0].totalInterviews,
+      averageScore: Number(stats[0].averageScore.toFixed(1)),
+      bestScore: stats[0].bestScore
+    }
+    : {
+      totalInterviews: 0,
+      averageScore: 0,
+      bestScore: 0,
+    }
+
+    res.status(200).json({
+      success: true,
+      stats: result,
+      interviewsThisMonth,
+      scoreTrend,
+      difficultyBreakdown
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error"
+    })
+  }
+}
