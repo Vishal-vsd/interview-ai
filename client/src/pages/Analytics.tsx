@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import { getAnalytics } from "../services/interviewService";
+import ScoreTrendChart from "../components/analytics/ScoreTrendChart";
 
 const Analytics = () => {
   const [analytics, setAnalytics] = useState<any>(null);
@@ -74,6 +75,11 @@ const Analytics = () => {
             </h2>
           </div>
         </div>
+        {analytics?.scoreTrend?.length > 0 && (
+          <div className="mt-10">
+            <ScoreTrendChart data={analytics.scoreTrend} />
+          </div>
+        )}
       </div>
     </div>
   );
